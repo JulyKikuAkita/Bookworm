@@ -4,11 +4,32 @@
 //
 //  Created by Ifang Lee on 11/1/21.
 //
+//@Binding, which lets us connect an @State property of one view to some underlying model data.
 
 import SwiftUI
 import CoreData
 
+struct PushButton: View {
+    let title: String
+    @Binding var isOn: Bool
+
+    var onColors = [Color.red, Color.yellow]
+    var offColors = [Color(white: 0.6), Color(white: 0.4)]
+
+    var body: some View {
+        Button(title) {
+            self.isOn.toggle()
+        }
+        .padding()
+        .background(LinearGradient(gradient: Gradient(colors: isOn ? onColors : offColors), startPoint: .top, endPoint: .bottom))
+        .foregroundColor(.white)
+        .clipShape(Capsule())
+        .shadow(radius: isOn ? 0 : 5)
+    }
+}
+
 struct ContentView: View {
+    @State private var rememberMe = false
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
@@ -17,28 +38,33 @@ struct ContentView: View {
     private var items: FetchedResults<Item>
 
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+        VStack {
+            PushButton(title: "Remember Me", isOn: $rememberMe)
+            Text(rememberMe ? "On" : "Off")
+
+            NavigationView {
+                List {
+                    ForEach(items) { item in
+                        NavigationLink {
+                            Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                        } label: {
+                            Text(item.timestamp!, formatter: itemFormatter)
+                        }
+                    }
+                    .onDelete(perform: deleteItems)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        EditButton()
+                    }
+                    ToolbarItem {
+                        Button(action: addItem) {
+                            Label("Add Item", systemImage: "plus")
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
+                Text("Select an item")
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-            Text("Select an item")
         }
     }
 
