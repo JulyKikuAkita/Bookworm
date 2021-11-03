@@ -30,17 +30,47 @@ struct PushButton: View {
 
 struct ContentView: View {
     @State private var rememberMe = false
-    @Environment(\.managedObjectContext) private var viewContext
 
+    //XCode13
+    @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
 
+    // 2019 swift class
+    // creates a fetch request for our “Student” entity, applies no sorting,
+    // and places it into a property called students that has the the type FetchedResults<Student>
+    @FetchRequest(entity: Student.entity(), sortDescriptors: []) var students: FetchedResults<Student>
+    //We access the managed object context by calling the @Environment property wrapper
+    @Environment(\.managedObjectContext) private var moc  //a managed object context
+
     var body: some View {
         VStack {
-            PushButton(title: "Remember Me", isOn: $rememberMe)
-            Text(rememberMe ? "On" : "Off")
+            VStack {
+                PushButton(title: "Remember Me", isOn: $rememberMe)
+                Text(rememberMe ? "On" : "Off")
+                List {
+                    ForEach(students, id: \.id) { student in
+                        Text(student.name ?? "Unknown") // Core Data always generate optional Swift properties
+                    }
+                    .onDelete(perform: deleteStudents)
+                }
+
+                Button("Add") {
+                    let firstNames = ["Noodles", "Aki", "Kiku", "Banana", "Noonoo", "Darth"]
+                    let lastNames = ["Lee", "Ta", "Li", "Vander"]
+
+                    let chosenFirstName = firstNames.randomElement()! //if not unwrap, the type will be optional string
+                    let chosenLastName = lastNames.randomElement()!
+
+                    //attach to a managed object context, where it should be stored.
+                    let student = Student(context: self.moc)
+                    student.id = UUID()
+                    student.name = "\(chosenFirstName) \(chosenLastName)"
+                    try? moc.save()
+                }
+            }
 
             NavigationView {
                 List {
@@ -92,6 +122,21 @@ struct ContentView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+
+    private func deleteStudents(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { students[$0] }.forEach(viewContext.delete)
 
             do {
                 try viewContext.save()
