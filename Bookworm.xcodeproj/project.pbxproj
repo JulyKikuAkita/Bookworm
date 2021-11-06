@@ -16,6 +16,7 @@
 		CADF28E42733488000B2944E /* AddBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF28E32733488000B2944E /* AddBookView.swift */; };
 		CADF28E627349C1900B2944E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF28E527349C1900B2944E /* RatingView.swift */; };
 		CADF28E82734E41500B2944E /* EmojiRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF28E72734E41500B2944E /* EmojiRatingView.swift */; };
+		CADF28EA2736478400B2944E /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF28E92736478400B2944E /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		CADF28E32733488000B2944E /* AddBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookView.swift; sourceTree = "<group>"; };
 		CADF28E527349C1900B2944E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		CADF28E72734E41500B2944E /* EmojiRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiRatingView.swift; sourceTree = "<group>"; };
+		CADF28E92736478400B2944E /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				CADF28E32733488000B2944E /* AddBookView.swift */,
 				CADF28E527349C1900B2944E /* RatingView.swift */,
 				CADF28D22730C79E00B2944E /* Assets.xcassets */,
+				CADF28E92736478400B2944E /* DetailView.swift */,
 				CADF28D72730C79E00B2944E /* Persistence.swift */,
 				CADF28D92730C79E00B2944E /* Bookworm.xcdatamodeld */,
 				CADF28D42730C79E00B2944E /* Preview Content */,
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CADF28D82730C79E00B2944E /* Persistence.swift in Sources */,
+				CADF28EA2736478400B2944E /* DetailView.swift in Sources */,
 				CADF28DB2730C79E00B2944E /* Bookworm.xcdatamodeld in Sources */,
 				CADF28E82734E41500B2944E /* EmojiRatingView.swift in Sources */,
 				CADF28D12730C79A00B2944E /* ContentView.swift in Sources */,
