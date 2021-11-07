@@ -16,6 +16,7 @@ struct AddBookView: View {
     @State private var rating = 3
     @State private var genre = ""
     @State private var review = ""
+    @State private var date = Date()
 
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller", "Doge"]
 
@@ -46,14 +47,21 @@ struct AddBookView: View {
                         newBook.rating = Int16(self.rating)
                         newBook.genre = self.genre
                         newBook.review = self.review
+                        newBook.date = self.date
 
                         try? moc.save()
                         self.presentationMode.wrappedValue.dismiss()
                     }
+                    .disabled(setGenre())
                 }
             }
             .navigationTitle("Add Book")
         }
+    }
+
+    // disable save button if genre not set
+    func setGenre() -> Bool {
+        return !genres.contains(genre)
     }
 }
 

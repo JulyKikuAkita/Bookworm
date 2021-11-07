@@ -36,12 +36,14 @@ struct DetailView: View {
                     .font(.title)
                     .foregroundColor(.secondary)
 
+                Text(book.date ?? Date(timeIntervalSinceReferenceDate: 0), formatter: bookDateFormatter)
+                    .font(.footnote)
+
                 Text(book.review ?? "No review")
                     .padding()
 
                 RatingView(rating: .constant(Int(book.rating)))
                     .font(.largeTitle)
-                
                 Spacer()
             }
         }
@@ -68,16 +70,25 @@ struct DetailView: View {
     }
 }
 
+private let bookDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .medium
+    formatter.timeZone = .current
+    return formatter
+}()
+
 struct DetailView_Previews: PreviewProvider {
     static let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 
     static var previews: some View {
         let book = Book(context: moc)
-        book.title = "Test book"
-        book.author = "Test author"
+        book.title = "Noodle's younger sister"
+        book.author = "Aki Noodle"
         book.genre = "Doge"
         book.rating = 4
-        book.review = "This was a great book; I test it."
+        book.review = "This was a great book; I tested it."
+        book.date = Date()
         return NavigationView {
             DetailView(book: book)
         }
