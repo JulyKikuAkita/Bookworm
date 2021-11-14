@@ -68,7 +68,9 @@ struct ContentView: View {
         }
 
         // save the context
-        try? moc.save()
+        if moc.hasChanges {
+            try? moc.save()
+        }
     }
 }
 
