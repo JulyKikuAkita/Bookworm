@@ -30,8 +30,27 @@ struct RatingView: View {
                     .onTapGesture {
                         self.rating = number
                     }
+                // Way1: Voice over: x star button is selected for selected; the rest is star button
+//                    .accessibilityLabel("\(number == 1 ? "1 start" : "\(number) starts")")
+//                    .accessibilityRemoveTraits(.isImage)
+//                    .accessibilityAddTraits(number > rating ? .isButton : [.isButton, .isSelected])
             }
         }
+        //Way2: use Hstack as a whole rating element
+        .accessibilityElement()
+        .accessibilityLabel(label)
+        .accessibilityValue(rating == 1 ? "1 start" : "\(rating) stars")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                if rating < maximumRaing { rating += 1 }
+            case .decrement:
+                if rating > 1 {rating -= 1 }
+            default:
+                break
+            }
+        }
+
     }
 
     /**
